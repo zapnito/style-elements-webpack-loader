@@ -1,0 +1,36 @@
+{
+  "name": "@zapnito/style-elements-webpack-loader",
+  "version": "0.1.0",
+  "description": "Webpack loader for Elm style-elements",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zapnito/style-elements-webpack-loader.git"
+  },
+  "keywords": [
+    "Elm",
+    "style-elements",
+    "css",
+    "layout"
+  ],
+  "files": [
+    "js/utils.js",
+    "js/processor.js"
+  ],
+  "author": "Oliver Searle-Barnes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zapnito/style-elements-webpack-loader/issues"
+  },
+  "homepage": "https://github.com/zapnito/style-elements-webpack-loader#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "loader-utils": "^1.1.0",
+    "node-elm-compiler": "^4.3.2",
+    "path": "^0.12.7",
+    "tmp": "0.0.31"
+  }
+}
