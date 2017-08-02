@@ -20,5 +20,7 @@ module.exports = function(source) {
       .then(() => hasLoadedDependencies = true);
   }
 
-  processor(options).then(result => callback(null, result));
+  processor(options)
+    .then(result => callback(null, result))
+    .catch(error => callback(error));
 };
