@@ -15,24 +15,30 @@ function generateCss(opts) {
   });
 
   return withTmpDir().then(tmpDirPath => {
-    var emitterSourceFile = path.join(tmpDirPath, "StyleElementsEmitter.elm");
+    var emitterModule = `StyleElementsEmitter${randomInteger(Number.MAX_SAFE_INTEGER)}`;
+    var emitterSourceFile = path.join(tmpDirPath, `${emitterModule}.elm`);
     var emitterWorkerFile = path.join(tmpDirPath, "style-elements-emitter.js");
     var emitterTemplate = buildEmitterTemplate(
       opts.stylesheetModule,
       opts.stylesheetFunction,
-      opts.mode
+      opts.mode,
+      emitterModule
     );
 
     return writeFile(emitterSourceFile, emitterTemplate)
       .then(() => compile(emitterSourceFile, { output: emitterWorkerFile, yes: true }))
-      .then(() => extractCssResults(emitterWorkerFile));
+      .then(() => extractCssResults(emitterWorkerFile, emitterModule));
   });
 }
 
-function buildEmitterTemplate(stylesheetModule, stylesheetFunction, mode) {
+function randomInteger(max) {
+  return Math.floor(Math.random() * (max + 1));
+}
+
+function buildEmitterTemplate(stylesheetModule, stylesheetFunction, mode, emitterModule) {
   return unindent(
     `
-    port module StyleElementsEmitter exposing (..)
+    port module ${emitterModule} exposing (..)
 
     import ${stylesheetModule}
     import Element
@@ -76,8 +82,8 @@ function compile(src, options) {
   });
 }
 
-function extractCssResults(destFile) {
-  var emitter = require(destFile).StyleElementsEmitter;
+function extractCssResults(destFile, module) {
+  var emitter = require(destFile)[module];
   var worker = emitter.worker();
 
   return new Promise(resolve => worker.ports.result.subscribe(resolve));
